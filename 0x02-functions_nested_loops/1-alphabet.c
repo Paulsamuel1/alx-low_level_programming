@@ -1,20 +1,15 @@
-#include <stdio.h>
 #include "main.h"
-
 /**
  * print_alphabet - prints the alphabet, in lowercase, followed by a new line
+ *
+ * Retuen: always 0;
  */
+
 void print_alphabet(void)
 {
-	char ch;
+	char i;
 
-	ch = 'a';
-
-	while (ch <= 'z')
-	{
-		_putchar(ch);
-		ch++;
-	}
-
+	for (i = 'a' ; i <= 'z' ; i++)
+		_putchar(i);
 	_putchar('\n');
 }
