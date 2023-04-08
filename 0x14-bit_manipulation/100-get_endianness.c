@@ -1,15 +1,17 @@
 #include "main.h"
 
 /**
- * get_endianness - sets the value of a bit to 1 at a given index
- * Return: 1 if little endian 0 if big endian
+ * get_endianness - function that checks the endianness
+ *
+ * Return: 0 if big endian, 1 if little endian
  */
 int get_endianness(void)
 {
-	unsigned int x = 1;
-	char *c = (char *)&i;
+	unsigned int a;
+	char *j;
 
-	if (*c)
-		return (1);
-	return (0);
+	a = 1;
+	j = (char *) &a;
+
+	return ((int)*j);
 }
