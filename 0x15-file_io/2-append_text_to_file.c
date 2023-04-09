@@ -1,64 +1,28 @@
 #include "main.h"
 
-#define BUFFER_SIZE 1024
 /**
- * close_w - close function
- * @fdread: read
- * @fdwrite: write
+ * append_text_to_file - Function that creates a file
+ * @filename: type char filename pointer of FD
+ * @text_content: type char pointer of char
+ * Return: -1 if NULL in FN, 1 on sucess
  */
-void close_w(int fdread, int fdwrite)
+int append_text_to_file(const char *filename, char *text_content)
 {
-	if (close(fdwrite) == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fdwrite);
-		exit(100); }
-	if (close(fdread) == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't close fd %d\n", fdread);
-		exit(100); }
-}
+	int file;
+	int final_out;
+	int a;
 
-/**
- * main - Function that copies the content of a file to another file
- * @argc: argument of count
- * @argv: argument of array
- * Return: exit_success if success, exit error 97, 98, 99, 100
- */
-int main(int argc, char *argv[])
-{
-	char buffer[BUFFER_SIZE];
-	char *file_from, *file_to;
-	int fdread, fdwrite;
-	ssize_t rd = 1024, wr;
-
-	if (argc != 3)
-	{
-		dprintf(STDERR_FILENO, "Usage: cp file_from file_to\n");
-		exit(97); }
-	file_from = argv[1];
-	file_to = argv[2];
-	fdread = open(file_from, O_RDONLY);
-	if (fdread == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
-		exit(98); }
-	fdwrite = open(file_to, O_CREAT | O_TRUNC | O_WRONLY | O_APPEND, 0664);
-	if (fdwrite == -1)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to);
-		exit(99); }
-	while (rd == BUFFER_SIZE)
-	{
-		rd = read(fdread, buffer, BUFFER_SIZE);
-		if (rd == -1)
-		{
-			dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", file_from);
-			exit(98); }
-		wr = write(fdwrite, buffer, rd);
-		if (wr == -1)
-		{
-			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", file_to);
-			exit(99); }}
-	close_w(fdread, fdwrite);
-	return (0);
+	file = open(filename, O_RDWR | O_APPEND);
+	if (filename == NULL)
+		return (-1);
+	if (file == -1)
+	return (-1);
+	if (text_content == NULL)
+		return (1);
+	while (*(text_content + a) != '\0')
+		a++;
+	final_out = write(file, text_content, a);
+	if (final_out == -1)
+		return (-1);
+	return (1);
 }
