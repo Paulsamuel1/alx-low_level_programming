@@ -1,12 +1,21 @@
-General
-What is a dynamic library, how does it work, how to create one, and how to use it What is the environment variable $LD_LIBRARY_PATH and how to use it What are the differences between static and shared libraries Basic usage nm, ldd, ldconfig
+It is known that the purpose of libraries in C are to order the functions we build and work with. To avoid mistakes and to be efficient, programmers need to be organized in their work, but which kind of library would be better a Static Library or a Dynamic Library (also known as Shared Library)?
 
-Copyright - Plagiarism
-You are tasked to come up with solutions for the tasks below yourself to meet with the above learning objectives. You will not be able to meet the objectives of this or any following project by copying and pasting someone else’s work. You are not allowed to publish any content of this project. Any form of plagiarism is strictly forbidden and will result in removal from the program.
+In a previous post we talk about what a is Static Library and how to create one, you can see it in the link below:
 
-Requirements
-C
-Allowed editors: vi, vim, emacs All your files will be compiled on Ubuntu 20.04 LTS using gcc, using the options -Wall -Werror -Wextra -pedantic -std=gnu89 All your files should end with a new line A README.md file, at the root of the folder of the project is mandatory Your code should use the Betty style. It will be checked using betty-style.pl and betty-doc.pl You are not allowed to use global variables No more than 5 functions per file You are not allowed to use the standard library. Any use of functions like printf, puts, etc… is forbidden You are allowed to use _putchar You don’t have to push _putchar.c, we will use our file. If you do it won’t be taken into account In the following examples, the main.c files are shown as examples. You can use them to test your functions, but you don’t have to push them to your repo (if you do we won’t take them into account). We will use our own main.c files at compilation. Our main.c files might be different from the one shown in the examples The prototypes of all your functions and the prototype of the function _putchar should be included in your header file called main.h Don’t forget to push your header file
+https://medium.com/@kenneth.ca95/what-you-need-to-know-about-c-static-libraries-69842f925e0a
 
-Bash
-Allowed editors: vi, vim, emacs All your scripts will be tested on Ubuntu 20.04 LTS All your files should end with a new line (why?) The first line of all your files should be exactly #!/bin/bash A README.md file, at the root of the folder of the project, describing what each script is doing All your files must be executable
+The main difference from Static Libraries and Dynamic Libraries in Static, the linker makes a copy of all of the selected functions for the library to the executable file and in Dynamic it is not necessary. This means a difference in use of memory but also in risk of data corruption and in how easily the code is handled.
+
+How to create a Dynamic Library The way to create a Dynamic Library in Linux is with the gcc command using the -c to generate the object files (.o) from the source files (.c) and the -fPIC to make the code position independent. Thus, the following command makes a bunch of .o files from each .c file in the current directory (You can select which functions you want for your library).
+
+gcc -c -fPIC *.c Next, we are going to put together those objects files into one library. To do this as a Dynamic Library we also use gcc but with the -shared option. The -o is to specify the name of the file you want it to have.
+
+gcc -shared -o liball.so *.o This way you must have your library created. To verify that you did it and have the right functions as dynamic symbols you can use:
+
+nm -D liball.so Great! at this point, you have your Dynamic Library created!
+
+How to use it Now, you have to compile the library with your main.c file to link it and use it as you want. For this to work, you have to add the location of your library files into the environmental variable to know where to find the functions.
+
+export LD_LIBRARY_PATH=.:$LD_LIBRARY_PATH Then, you can compile it by typing the following:
+
+gcc -L . 0-main.c -l all -o example Note that the name we gave to the library in this example was ‘all’. Here we use the -L option to tell the program where to find the library, in this case . that refers to the current directory. The -l option is to tell the compiler to look for the library.
